@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Календарь</title>
+    <link rel="stylesheet" href="main.css"/>
+</head>
+<body>
+<div class="calendar-wrapper" v-bind:class="{'calendar-wrapper': true, 'calendar-wrapper--loaded' : interface.is_loading}" id="app">
+    <div class="calendar-pack-popup" v-if="active_pack && !active_pack.picked">
+        <div class="calendar-pack-popup__header">{{active_pack.name}}</div>
+        <div class="calendar-pack-popup__button" v-on:click="pickPack">Забрать подарок</div>
+    </div>
+    <div class="calendar-action-popup" v-if="active_pack && active_pack.picked">
+        <div class="calendar-action-popup__header">{{active_pack.action.name}}</div>
+    </div>
+    <div v-for="pack in packs" class="calendar-pack"
+         v-bind:class="{'calendar-pack--active' : active_pack && active_pack.date === pack.date,'calendar-pack--picked': pack.picked }"><span>{{pack.name}}</span></div>
+</div>
+<script src="https://ru.vuejs.org/js/vue.js"></script>
+<script>
+    var server_emulate = {
+        getPacks : function (callback) {
+            setTimeout(function () {
+                var packs = [
+                    {
+                        name : 'blabla1',
+                        date : 'date1',
+                        picked : false,
+                        action : {
+                            name : 'action-blabla1'
+                        }
+                    },
+                    {
+                        name : 'blabla2',
+                        date : 'date2',
+                        picked : false,
+                        action : {
+                            name : 'action-blabla2'
+                        }
+                    },
+                    {
+                        name : 'blabla3',
+                        date : 'date3',
+                        picked : false,
+                        action : {
+                            name : 'action-blabla3'
+                        }
+                    }
+                ];
+                var date = 'date1';
+                callback({packs: packs, date : date});
+            }, 100);
+        }
+    };
+    var app = new Vue({
+        el: '#app',
+        data: {
+            packs : [],
+            current_date : false,
+            interface : {
+                active_pack : false,
+                is_loading : false
+            }
+
+        },
+        created : function () {
+           server_emulate.getPacks(this.initPacks.bind(this));
+        },
+        computed : {
+            active_pack : function () {
+                var i, count = this.packs.length;
+                if (this.current_date) {
+                    for (i = 0; i < count; i++) {
+                        if (this.packs[i].date  === this.current_date) {
+                            return this.packs[i];
+                        }
+                    }
+                    return false;
+                } else {
+                    return false;
+                }
+            }
+        },
+        methods : {
+            initPacks : function (data) {
+                this.packs = data.packs;
+                this.interface.is_loading = true;
+                this.current_date = data.date;
+            },
+            pickPack : function () {
+                this.active_pack.picked = true;
+            }
+        }
+    });
+</script>
+</body>
+</html>

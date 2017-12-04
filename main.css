@@ -1,0 +1,34 @@
+.calendar-wrapper {
+    display: none;
+}
+.calendar-wrapper--loaded {
+    display: block;
+}
+.calendar-pack-popup {
+    width: 300px;
+    margin: 20px auto;
+}
+.calendar-action-popup {
+    width: 300px;
+    margin: 20px auto;
+
+}
+.calendar-action-popup__header {
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+.calendar-pack-popup__header {
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+.calendar-pack-popup__button {
+    height: 40px;
+    border: 1px solid yellowgreen;
+    background: yellow;
+    color : white;
+    font: 16px/40px Verdana, sans-serif;
+    text-align: center;
+    cursor: pointer;
+}
